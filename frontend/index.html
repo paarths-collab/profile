@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="logo">Portfolio</a>
+            <div class="nav-links">
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#experience">Experience</a>
+                <a href="#skills">Skills</a>
+                <a href="#contact">Contact</a>
+                <a href="/static/login.html">Login</a>
+            </div>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Available for work</div>
+            <h1 class="hero-title">
+                <span id="heroName">Your Name</span>
+            </h1>
+            <p class="hero-subtitle" id="heroHeadline">Full-Stack Developer & Designer</p>
+            <p class="hero-description" id="heroDescription">
+                Building digital experiences that matter. Passionate about creating elegant solutions to complex
+                problems.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View Projects →</a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+            <div class="hero-social">
+                <a href="#" id="heroGithub" target="_blank" class="social-link">GitHub</a>
+                <a href="#" id="heroLinkedin" target="_blank" class="social-link">LinkedIn</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <img id="profileImage" src="" alt="Profile" class="profile-img-hero" />
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">About Me</span>
+                <h2 class="section-title">Crafting digital experiences with precision and creativity</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p id="aboutText">
+                        I'm a passionate developer who loves turning ideas into reality through code.
+                        With expertise in modern web technologies, I create solutions that are not only
+                        functional but also beautiful and user-friendly.
+                    </p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="projectCount">0</span>
+                        <span class="stat-label">Projects</span>
+                    </div>
+                    <!-- <div class="stat-item">
+                        <span class="stat-number" id="expCount">0</span>
+                        <span class="stat-label">Years Exp</span>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section projects">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">My Work</span>
+                <h2 class="section-title">Featured Projects</h2>
+            </div>
+            <div id="projectFilters" class="project-filters"></div>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section experience">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Experience</span>
+                <h2 class="section-title">Professional Journey</h2>
+            </div>
+            <div class="timeline" id="experienceTimeline">
+                <!-- Experience items will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section with Logo Marquee -->
+    <section id="skills" class="section skills">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Skills</span>
+                <h2 class="section-title">Technologies I Work With</h2>
+            </div>
+
+            <!-- Logo Marquee -->
+            <div class="logo-marquee">
+                <div class="logo-marquee-track">
+                    <div class="logo-marquee-content" id="skillsMarquee">
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/python/white"
+                                alt="">Python</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/javascript/white"
+                                alt="">JavaScript</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/react/white"
+                                alt="">React</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/nodedotjs/white"
+                                alt="">Node.js</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/fastapi/white"
+                                alt="">FastAPI</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/postgresql/white"
+                                alt="">PostgreSQL</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/docker/white"
+                                alt="">Docker</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/typescript/white"
+                                alt="">TypeScript</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/html5/white"
+                                alt="">HTML/CSS</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/git/white"
+                                alt="">Git</span>
+                    </div>
+                    <div class="logo-marquee-content" id="skillsMarqueeCopy" aria-hidden="true">
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/python/white"
+                                alt="">Python</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/javascript/white"
+                                alt="">JavaScript</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/react/white"
+                                alt="">React</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/nodedotjs/white"
+                                alt="">Node.js</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/fastapi/white"
+                                alt="">FastAPI</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/postgresql/white"
+                                alt="">PostgreSQL</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/docker/white"
+                                alt="">Docker</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/typescript/white"
+                                alt="">TypeScript</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/html5/white"
+                                alt="">HTML/CSS</span>
+                        <span class="logo-marquee-item"><img src="https://cdn.simpleicons.org/git/white"
+                                alt="">Git</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Grid (fallback/additional) -->
+            <div class="skills-grid" id="skillsGrid">
+                <!-- Skills will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Hobbies Section Removed -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Get In Touch</span>
+                <h2 class="section-title">Let's Work Together</h2>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p class="contact-email" id="contactEmail">email@example.com</p>
+                    <p class="contact-phone" id="contactPhone">+91 9876543210</p>
+                </div>
+                <div class="contact-links">
+                    <a href="#" id="contactGithub" target="_blank" class="contact-link">GitHub →</a>
+                    <a href="#" id="contactLinkedin" target="_blank" class="contact-link">LinkedIn →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 <span id="footerName">Your Name</span>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Admin Panel Removed from Public View -->
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/static/script.js?v=18"></script>
+</body>
+
+</html>

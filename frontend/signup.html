@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Profile Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-title {
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .auth-link a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        #message {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-card">
+        <div class="auth-title">Create Account</div>
+        <div id="message"></div>
+        <form id="signup-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required minlength="6">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirm-password" required minlength="6">
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="auth-link">
+            Already have an account? <a href="login.html">Log in</a>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://localhost:8001";
+
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            const msg = document.getElementById('message');
+
+            if (password !== confirm) {
+                msg.style.display = 'block';
+                msg.style.background = 'rgba(239, 68, 68, 0.1)';
+                msg.style.color = '#ef4444';
+                msg.textContent = "Passwords do not match";
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API}/register?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, {
+                    method: 'POST'
+                });
+
+                if (res.ok) {
+                    msg.style.display = 'block';
+                    msg.style.background = 'rgba(34, 197, 94, 0.1)';
+                    msg.style.color = '#22c55e';
+                    msg.textContent = 'Account created! Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                } else {
+                    const err = await res.json();
+                    msg.style.display = 'block';
+                    msg.style.background = 'rgba(239, 68, 68, 0.1)';
+                    msg.style.color = '#ef4444';
+                    msg.textContent = err.detail || 'Signup failed';
+                }
+            } catch (err) {
+                console.error(err);
+                msg.style.display = 'block';
+                msg.style.color = '#ef4444';
+                msg.textContent = 'Connection error';
+            }
+        });
+    </script>
+</body>
+
+</html>

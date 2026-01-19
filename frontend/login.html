@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Profile Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-title {
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .auth-link a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        #message {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-card">
+        <div class="auth-title">Admin Login</div>
+        <div id="message"></div>
+        <form id="login-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Log In</button>
+        </form>
+        <div class="auth-link">
+            Don't have an account? <a href="signup.html">Sign up</a>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://localhost:8001";
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('message');
+
+            const formData = new URLSearchParams();
+            formData.append('username', email); // OAuth2 expects 'username'
+            formData.append('password', password);
+
+            try {
+                const res = await fetch(`${API}/token`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('user_email', email); // Store for basic info lookup
+                    window.location.href = 'admin.html';
+                } else {
+                    const err = await res.json();
+                    msg.style.display = 'block';
+                    msg.style.background = 'rgba(239, 68, 68, 0.1)';
+                    msg.style.color = '#ef4444';
+                    msg.textContent = err.detail || 'Login failed';
+                }
+            } catch (err) {
+                console.error(err);
+                msg.style.display = 'block';
+                msg.style.color = '#ef4444';
+                msg.textContent = 'Connection error';
+            }
+        });
+    </script>
+</body>
+
+</html>

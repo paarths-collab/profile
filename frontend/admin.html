@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Profile Manager</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .admin-page {
+            padding: 6rem 2rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .admin-tab.active,
+        .admin-tab:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .admin-form {
+            display: none;
+        }
+
+        .admin-form.active {
+            display: block;
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-card h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.75rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--text-primary);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .message.success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #22c55e;
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+
+        .nav-back:hover {
+            color: var(--text-primary);
+        }
+
+        /* Item List Styles */
+        .item-list {
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+        }
+
+        .list-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .item-title {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .item-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-edit {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+        }
+
+        .btn-edit:hover {
+            background: var(--bg-card);
+            border-color: var(--text-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-page">
+        <a href="/" class="nav-back">← Back to Portfolio</a>
+        <h1 style="margin-bottom: 2rem;">Profile Admin</h1>
+
+        <!-- Message -->
+        <div id="message" class="message" style="display: none;"></div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" onclick="showTab('basic')">Basic Info</button>
+            <button class="admin-tab" onclick="showTab('project')">Project</button>
+            <button class="admin-tab" onclick="showTab('experience')">Experience</button>
+            <button class="admin-tab" onclick="showTab('skill')">Skills</button>
+            <button class="admin-tab" onclick="showTab('hobby')">Hobbies</button>
+        </div>
+
+        <!-- Basic Info Form -->
+        <div id="basic-form" class="admin-form active">
+            <div class="form-card">
+                <h3>Basic Information</h3>
+                <div style="margin-bottom: 1.5rem;">
+                    <button class="btn btn-secondary" onclick="loadBasicInfoForEdit()"
+                        style="padding: 0.5rem 1rem; font-size: 0.85rem;">⬇️ Load Existing Info from
+                        Email/Mobile</button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" id="basic-name" placeholder="Your full name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="basic-email" placeholder="email@example.com" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="basic-mobile" placeholder="+91 9876543210" />
+                    </div>
+                    <div class="form-group">
+                        <label>Current College</label>
+                        <input type="text" id="basic-college" placeholder="College/University name" />
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Profile Image URL</label>
+                    <input type="url" id="basic-image" placeholder="https://example.com/me.jpg" />
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Headline</label>
+                    <input type="text" id="basic-headline" placeholder="e.g. Full-Stack Developer & Designer" />
+                </div>
+                <!-- About Text (Unlimited now) -->
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>About Me Text</label>
+                    <textarea id="basic-about" style="min-height: 120px;" placeholder="Tell your story..."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Short Description (Hero)</label>
+                    <textarea id="basic-description" style="min-height: 80px;"
+                        placeholder="Short welcome message..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>LinkedIn URL</label>
+                        <input type="url" id="basic-linkedin" placeholder="https://linkedin.com/in/..." />
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub URL</label>
+                        <input type="url" id="basic-github" placeholder="https://github.com/..." />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Bio (Extended Description)</label>
+                    <textarea id="basic-bio" placeholder="Brief description about yourself..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="saveBasicInfo()">Save Basic Info</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Form -->
+        <div id="project-form" class="admin-form">
+            <div class="form-card">
+                <h3>Add Project</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Project Name *</label>
+                        <input type="text" id="proj-name" placeholder="Project name" />
+                    </div>
+                    <div class="form-group">
+                        <label>One Liner *</label>
+                        <input type="text" id="proj-oneliner" placeholder="Brief one-line description" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tech Stack *</label>
+                        <input type="text" id="proj-techstack" placeholder="React, Node.js, PostgreSQL" />
+                    </div>
+                    <div class="form-group">
+                        <label>Source (GitHub)</label>
+                        <input type="url" id="proj-source" placeholder="https://github.com/..." />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Live Link</label>
+                        <input type="url" id="proj-link" placeholder="https://..." />
+                    </div>
+                    <div class="form-group">
+                        <label>Image URLs</label>
+                        <input type="text" id="proj-images" placeholder="Comma-separated image URLs" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="proj-description" placeholder="Detailed project description..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addProject()">Add Project</button>
+                </div>
+            </div>
+            <div class="form-card">
+                <h3>Manage Projects</h3>
+                <div id="project-list"></div>
+            </div>
+        </div>
+
+        <!-- Experience Form -->
+        <div id="experience-form" class="admin-form">
+            <div class="form-card">
+                <h3>Add Experience</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Company Name *</label>
+                        <input type="text" id="exp-company" placeholder="Company name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Role *</label>
+                        <input type="text" id="exp-role" placeholder="Your role/position" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="text" id="exp-start" placeholder="Jan 2023" />
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="text" id="exp-end" placeholder="Present or Dec 2023" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="exp-description" placeholder="What you did at this role..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addExperience()">Add Experience</button>
+                </div>
+            </div>
+            <div class="form-card">
+                <h3>Manage Experience</h3>
+                <div id="experience-list"></div>
+            </div>
+        </div>
+
+        <!-- Skills Form -->
+        <div id="skill-form" class="admin-form">
+            <div class="form-card">
+                <h3>Add Skills</h3>
+                <div class="form-group">
+                    <label>Application/Category</label>
+                    <input type="text" id="skill-app" placeholder="e.g., Web Development, Machine Learning" />
+                </div>
+                <div class="form-group">
+                    <label>Programming Languages</label>
+                    <input type="text" id="skill-languages" placeholder="Python, JavaScript, TypeScript" />
+                </div>
+                <div class="form-group">
+                    <label>Technologies/Frameworks</label>
+                    <input type="text" id="skill-tech" placeholder="React, Node.js, FastAPI, Docker" />
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addSkill()">Add Skills</button>
+                </div>
+            </div>
+            <div class="form-card">
+                <h3>Manage Skills</h3>
+                <div id="skill-list"></div>
+            </div>
+        </div>
+
+        <!-- Hobbies Form -->
+        <div id="hobby-form" class="admin-form">
+            <div class="form-card">
+                <h3>Add Hobby</h3>
+                <div class="form-group">
+                    <label>Hobby Name</label>
+                    <input type="text" id="hobby-name" placeholder="e.g., Photography, Gaming, Reading" />
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addHobby()">Add Hobby</button>
+                </div>
+            </div>
+            <div class="form-card">
+                <h3>Manage Hobbies</h3>
+                <div id="hobby-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://localhost:8001";
+        let editState = { type: null, id: null };
+        let cachedData = { project: [], experience: [], skill: [], hobby: [] };
+
+        // Authentication Check
+        const token = localStorage.getItem('token');
+        const userEmail = localStorage.getItem('user_email');
+        if (!token || !userEmail) {
+            window.location.href = 'login.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto-fill and lock email field
+            if (userEmail) {
+                const emailInput = document.getElementById('basic-email');
+                if (emailInput) {
+                    emailInput.value = userEmail;
+                    emailInput.readOnly = true; // Lock it
+                    emailInput.style.background = '#334155'; // Visual cue
+                }
+                // Auto-load data immediately
+                loadBasicInfoForEdit();
+            }
+        });
+
+        function getAuthHeaders() {
+            return {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+        }
+
+        function setEditMode(type, id) {
+            editState = { type, id };
+            const btn = document.querySelector(`#${type}-form .form-actions button`);
+            btn.textContent = 'Update ' + type.charAt(0).toUpperCase() + type.slice(1);
+            // Change color to indicate edit mode
+            btn.style.background = '#eab308'; // Yellow/Orange
+            btn.style.borderColor = '#eab308';
+        }
+
+        function clearEditMode(type) {
+            editState = { type: null, id: null };
+            const btn = document.querySelector(`#${type}-form .form-actions button`);
+            btn.textContent = 'Add ' + type.charAt(0).toUpperCase() + type.slice(1);
+            btn.style.background = ''; // Reset
+            btn.style.borderColor = '';
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('.admin-form').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`${tab}-form`).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load lists if user is identified
+            if (getIdentifier()) {
+                if (tab === 'project') loadProjects();
+                if (tab === 'experience') loadExperiences();
+                if (tab === 'skill') loadSkills();
+                if (tab === 'hobby') loadHobbies();
+            }
+        }
+
+        function showMessage(text, type = 'success') {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 5000);
+        }
+
+        async function loadBasicInfoForEdit() {
+            const identifier = getIdentifier();
+            if (!identifier) {
+                showMessage('Please enter Email or Mobile first to load data', 'error');
+                return;
+            }
+            try {
+                const res = await fetch(`${API}/basic-info?${identifier}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('basic-name').value = data.name || '';
+                    document.getElementById('basic-email').value = data.email || '';
+                    if (data.mobile_number) document.getElementById('basic-mobile').value = data.mobile_number;
+                    document.getElementById('basic-college').value = data.current_college || '';
+                    document.getElementById('basic-image').value = data.profile_image || '';
+                    document.getElementById('basic-headline').value = data.headline || '';
+                    document.getElementById('basic-about').value = data.about_text || '';
+                    document.getElementById('basic-linkedin').value = data.linkedin || '';
+                    document.getElementById('basic-github').value = data.github || '';
+                    document.getElementById('basic-description').value = data.description || '';
+                    // Handle new bio field
+                    if (document.getElementById('basic-bio')) {
+                        document.getElementById('basic-bio').value = data.bio || '';
+                    }
+                    showMessage('Loaded existing info! Make changes and click Save.', 'success');
+                } else {
+                    showMessage('User not found. Fill details to create new.', 'error');
+                }
+            } catch (e) {
+                showMessage('Error loading data: ' + e.message, 'error');
+            }
+        }
+
+        function getIdentifier() {
+            const email = document.getElementById('basic-email').value.trim();
+            const mobile = document.getElementById('basic-mobile').value.trim();
+            if (email) return `email=${encodeURIComponent(email)}`;
+            if (mobile) return `mobile=${encodeURIComponent(mobile)}`;
+            return null;
+        }
+
+        async function saveBasicInfo() {
+            const data = {
+                name: document.getElementById('basic-name').value,
+                email: document.getElementById('basic-email').value,
+                mobile_number: document.getElementById('basic-mobile').value || null,
+                current_college: document.getElementById('basic-college').value || null,
+                profile_image: document.getElementById('basic-image').value || null,
+                headline: document.getElementById('basic-headline').value || null,
+                about_text: document.getElementById('basic-about').value || null,
+                linkedin: document.getElementById('basic-linkedin').value || null,
+                github: document.getElementById('basic-github').value || null,
+                description: document.getElementById('basic-description').value || null,
+                bio: document.getElementById('basic-bio') ? (document.getElementById('basic-bio').value || null) : null
+            };
+
+            try {
+                const res = await fetch(`${API}/basic-info`, {
+                    method: 'POST',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    showMessage('Basic info saved successfully!');
+                } else {
+                    showMessage(result.detail || 'Error saving basic info', 'error');
+                }
+            } catch (e) {
+                showMessage('Error: ' + e.message, 'error');
+            }
+        }
+
+        async function addProject() {
+            const identifier = getIdentifier();
+            if (!identifier) {
+                showMessage('Please save basic info first (need email)', 'error');
+                return;
+            }
+
+            const data = {
+                name: document.getElementById('proj-name').value,
+                one_liner: document.getElementById('proj-oneliner').value,
+                tech_stack: document.getElementById('proj-techstack').value,
+                description: document.getElementById('proj-description').value,
+                source: document.getElementById('proj-source').value || null,
+                link: document.getElementById('proj-link').value || null,
+                images: document.getElementById('proj-images').value || null
+            };
+
+            try {
+                let res;
+                if (editState.type === 'project' && editState.id) {
+                    res = await fetch(`${API}/projects/${editState.id}`, {
+                        method: 'PUT',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    res = await fetch(`${API}/projects?${identifier}`, {
+                        method: 'POST',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (res.ok) {
+                    showMessage(editState.id ? 'Project updated!' : 'Project added successfully!');
+                    clearProjectForm();
+                    clearEditMode('project');
+                    loadProjects();
+                } else {
+                    showMessage((await res.json()).detail || 'Error saving project', 'error');
+                }
+            } catch (e) {
+                showMessage('Error: ' + e.message, 'error');
+            }
+        }
+
+        async function addExperience() {
+            const identifier = getIdentifier();
+            if (!identifier) {
+                showMessage('Please save basic info first (need email)', 'error');
+                return;
+            }
+
+            const data = {
+                company_name: document.getElementById('exp-company').value,
+                role: document.getElementById('exp-role').value,
+                start_date: document.getElementById('exp-start').value || null,
+                end_date: document.getElementById('exp-end').value || null,
+                description: document.getElementById('exp-description').value
+            };
+
+            try {
+                let res;
+                if (editState.type === 'experience' && editState.id) {
+                    res = await fetch(`${API}/experiences/${editState.id}`, {
+                        method: 'PUT',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    res = await fetch(`${API}/experiences?${identifier}`, {
+                        method: 'POST',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (res.ok) {
+                    showMessage(editState.id ? 'Experience updated!' : 'Experience added successfully!');
+                    clearExperienceForm();
+                    clearEditMode('experience');
+                    loadExperiences();
+                } else {
+                    showMessage((await res.json()).detail || 'Error saving experience', 'error');
+                }
+            } catch (e) {
+                showMessage('Error: ' + e.message, 'error');
+            }
+        }
+
+        async function addSkill() {
+            const identifier = getIdentifier();
+            if (!identifier) {
+                showMessage('Please save basic info first (need email)', 'error');
+                return;
+            }
+
+            const data = {
+                application: document.getElementById('skill-app').value,
+                programming_language: document.getElementById('skill-languages').value,
+                technologies: document.getElementById('skill-tech').value
+            };
+
+            try {
+                let res;
+                if (editState.type === 'skill' && editState.id) {
+                    res = await fetch(`${API}/skills/${editState.id}`, {
+                        method: 'PUT',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    res = await fetch(`${API}/skills?${identifier}`, {
+                        method: 'POST',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (res.ok) {
+                    showMessage(editState.id ? 'Skills updated!' : 'Skills added successfully!');
+                    clearSkillForm();
+                    clearEditMode('skill');
+                    loadSkills();
+                } else {
+                    showMessage((await res.json()).detail || 'Error saving skills', 'error');
+                }
+            } catch (e) {
+                showMessage('Error: ' + e.message, 'error');
+            }
+        }
+
+        async function addHobby() {
+            const identifier = getIdentifier();
+            if (!identifier) {
+                showMessage('Please save basic info first (need email)', 'error');
+                return;
+            }
+
+            const data = { hobby_name: document.getElementById('hobby-name').value };
+
+            try {
+                let res;
+                if (editState.type === 'hobby' && editState.id) {
+                    res = await fetch(`${API}/hobbies/${editState.id}`, {
+                        method: 'PUT',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    res = await fetch(`${API}/hobbies?${identifier}`, {
+                        method: 'POST',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (res.ok) {
+                    showMessage(editState.id ? 'Hobby updated!' : 'Hobby added successfully!');
+                    document.getElementById('hobby-name').value = '';
+                    clearEditMode('hobby');
+                    loadHobbies();
+                } else {
+                    showMessage((await res.json()).detail || 'Error saving hobby', 'error');
+                }
+            } catch (e) {
+                showMessage('Error: ' + e.message, 'error');
+            }
+        }
+
+        function clearProjectForm() {
+            ['proj-name', 'proj-oneliner', 'proj-techstack', 'proj-description', 'proj-source', 'proj-link', 'proj-images'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+        }
+
+        function clearExperienceForm() {
+            ['exp-company', 'exp-role', 'exp-start', 'exp-end', 'exp-description'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+        }
+
+        function clearSkillForm() {
+            ['skill-app', 'skill-languages', 'skill-tech'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+        }
+
+        // List Management
+        async function loadProjects() {
+            const list = document.getElementById('project-list');
+            const identifier = getIdentifier();
+            if (!identifier) {
+                list.innerHTML = '<div style="color: var(--text-warning); text-align: center;">Values in Basic Info (Email) required to load data.</div>';
+                return;
+            }
+            list.innerHTML = '<div style="text-align: center; color: var(--text-muted);">Loading...</div>';
+            try {
+                const res = await fetch(`${API}/projects?${identifier}`);
+                if (res.ok) {
+                    const items = await res.json();
+                    cachedData.project = items;
+                    renderList('project-list', items, 'name', 'one_liner', 'deleteProject', 'editProject');
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function editProject(id) {
+            const item = cachedData.project.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('proj-name').value = item.name;
+            document.getElementById('proj-oneliner').value = item.one_liner;
+            document.getElementById('proj-techstack').value = item.tech_stack;
+            document.getElementById('proj-description').value = item.description;
+            document.getElementById('proj-source').value = item.source || '';
+            document.getElementById('proj-link').value = item.link || '';
+            document.getElementById('proj-images').value = item.images || '';
+            setEditMode('project', id);
+            document.getElementById('project-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteProject(id) {
+            if (!confirm('Are you sure you want to delete this project?')) return;
+            try {
+                const res = await fetch(`${API}/projects/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                if (res.ok) { showMessage('Project deleted'); loadProjects(); }
+                else showMessage('Error deleting project', 'error');
+            } catch (e) { showMessage('Error: ' + e.message, 'error'); }
+        }
+
+        async function loadExperiences() {
+            const list = document.getElementById('experience-list');
+            const identifier = getIdentifier();
+            if (!identifier) {
+                list.innerHTML = '<div style="color: var(--text-warning); text-align: center;">Values in Basic Info (Email) required to load data.</div>';
+                return;
+            }
+            list.innerHTML = '<div style="text-align: center; color: var(--text-muted);">Loading...</div>';
+            try {
+                const res = await fetch(`${API}/experiences?${identifier}`);
+                if (res.ok) {
+                    const items = await res.json();
+                    cachedData.experience = items;
+                    renderList('experience-list', items, 'company_name', 'role', 'deleteExperience', 'editExperience');
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function editExperience(id) {
+            const item = cachedData.experience.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('exp-company').value = item.company_name;
+            document.getElementById('exp-role').value = item.role;
+            document.getElementById('exp-start').value = item.start_date || '';
+            document.getElementById('exp-end').value = item.end_date || '';
+            document.getElementById('exp-description').value = item.description;
+            setEditMode('experience', id);
+            document.getElementById('experience-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteExperience(id) {
+            if (!confirm('Delete this experience?')) return;
+            try {
+                const res = await fetch(`${API}/experiences/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                if (res.ok) { showMessage('Experience deleted'); loadExperiences(); }
+                else showMessage('Error deleting', 'error');
+            } catch (e) { showMessage('Error: ' + e.message, 'error'); }
+        }
+
+        async function loadSkills() {
+            const list = document.getElementById('skill-list');
+            const identifier = getIdentifier();
+            if (!identifier) {
+                list.innerHTML = '<div style="color: var(--text-warning); text-align: center;">Values in Basic Info (Email) required to load data.</div>';
+                return;
+            }
+            list.innerHTML = '<div style="text-align: center; color: var(--text-muted);">Loading...</div>';
+            try {
+                const res = await fetch(`${API}/skills?${identifier}`);
+                if (res.ok) {
+                    const items = await res.json();
+                    cachedData.skill = items;
+                    if (items.length === 0) {
+                        list.innerHTML = '<div style="color: var(--text-muted); text-align: center;">No items found.</div>';
+                        return;
+                    }
+                    list.innerHTML = items.map(item => `
+                        <div class="item-row">
+                            <div class="item-info">
+                                <div class="item-title">${item.application || 'Skill Set'}</div>
+                                <div class="item-subtitle">${item.programming_language || ''} ${item.technologies || ''}</div>
+                            </div>
+                            <div>
+                                <button class="btn-edit" onclick="editSkill(${item.id})">Edit</button>
+                                <button class="btn-delete" onclick="deleteSkill(${item.id})">Delete</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function editSkill(id) {
+            const item = cachedData.skill.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('skill-app').value = item.application || '';
+            document.getElementById('skill-languages').value = item.programming_language || '';
+            document.getElementById('skill-tech').value = item.technologies || '';
+            setEditMode('skill', id);
+            document.getElementById('skill-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteSkill(id) {
+            if (!confirm('Delete this skill set?')) return;
+            try {
+                const res = await fetch(`${API}/skills/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                if (res.ok) { showMessage('Skill deleted'); loadSkills(); }
+                else showMessage('Error deleting', 'error');
+            } catch (e) { showMessage('Error: ' + e.message, 'error'); }
+        }
+
+        async function loadHobbies() {
+            const list = document.getElementById('hobby-list');
+            const identifier = getIdentifier();
+            if (!identifier) {
+                list.innerHTML = '<div style="color: var(--text-warning); text-align: center;">Values in Basic Info (Email) required to load data.</div>';
+                return;
+            }
+            list.innerHTML = '<div style="text-align: center; color: var(--text-muted);">Loading...</div>';
+            try {
+                const res = await fetch(`${API}/hobbies?${identifier}`);
+                if (res.ok) {
+                    const items = await res.json();
+                    cachedData.hobby = items;
+                    renderList('hobby-list', items, 'name', 'description', 'deleteHobby', 'editHobby');
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function editHobby(id) {
+            const item = cachedData.hobby.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('hobby-name').value = item.hobby_name || (item.name || '');
+            setEditMode('hobby', id);
+            document.getElementById('hobby-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteHobby(id) {
+            if (!confirm('Delete this hobby?')) return;
+            try {
+                const res = await fetch(`${API}/hobbies/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                if (res.ok) { showMessage('Hobby deleted'); loadHobbies(); }
+                else showMessage('Error deleting', 'error');
+            } catch (e) { showMessage('Error: ' + e.message, 'error'); }
+        }
+
+        function renderList(containerId, items, titleKey, subKey, deleteFnName, editFnName) {
+            const list = document.getElementById(containerId);
+            if (!list) return;
+            if (items.length === 0) {
+                list.innerHTML = '<div style="color: var(--text-muted); text-align: center;">No items found.</div>';
+                return;
+            }
+            list.innerHTML = items.map(item => {
+                let displayTitle = item[titleKey];
+                if (!displayTitle && item.hobby_name) displayTitle = item.hobby_name;
+
+                return `
+                <div class="item-row">
+                    <div class="item-info">
+                        <div class="item-title">${displayTitle || 'Untitled'}</div>
+                        <div class="item-subtitle">${item[subKey] || ''}</div>
+                    </div>
+                    <div>
+                        <button class="btn-edit" onclick="${editFnName}(${item.id})">Edit</button>
+                        <button class="btn-delete" onclick="${deleteFnName}(${item.id})">Delete</button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+    </script>
+</body>
+
+</html>
