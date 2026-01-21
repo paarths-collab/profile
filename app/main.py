@@ -27,13 +27,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve frontend - use Path.cwd() which works when running uvicorn from project root
+# Serve frontend - use absolute path relative to this file for robust deployment
 from pathlib import Path
 
-FRONTEND_DIR = Path.cwd() / "frontend"
+# Build paths relative to the project root (parent of 'app' folder)
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
+
+print(f"[STARTUP] Base directory: {BASE_DIR}")
 print(f"[STARTUP] Frontend directory: {FRONTEND_DIR}")
 print(f"[STARTUP] Frontend exists: {FRONTEND_DIR.exists()}")
-print(f"[STARTUP] Files in frontend: {list(FRONTEND_DIR.iterdir()) if FRONTEND_DIR.exists() else 'N/A'}")
+if FRONTEND_DIR.exists():
+    print(f"[STARTUP] Files in frontend: {list(FRONTEND_DIR.iterdir())}")
+    images_dir = FRONTEND_DIR / "images"
+    if images_dir.exists():
+        print(f"[STARTUP] Images in frontend/images: {list(images_dir.iterdir())}")
 
 # Mount static files
 if FRONTEND_DIR.exists():
