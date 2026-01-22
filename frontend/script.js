@@ -51,6 +51,21 @@ function getTechIcon(name) {
     return `https://cdn.simpleicons.org/${slug}/white`;
 }
 
+// Show hidden elements after loading
+function showLoadedElements() {
+    document.querySelectorAll('.loading-hidden').forEach(el => {
+        el.classList.add('loaded');
+    });
+}
+
+// Hide Loading Overlay
+function hideLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+    }
+}
+
 // Load Data
 async function loadAllData() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -74,6 +89,10 @@ async function loadAllData() {
             const info = await infoRes.json();
             renderBasicInfo(info);
         }
+
+        // Show hero elements after basic info is loaded
+        showLoadedElements();
+        hideLoadingOverlay();
 
         // 2. Projects
         const projRes = await fetch(`${API}/projects?${query}`);
@@ -100,15 +119,21 @@ async function loadAllData() {
 
     } catch (e) {
         console.error("Error loading data:", e);
+        showLoadedElements(); // Show elements even on error
+        hideLoadingOverlay();
     }
 }
 
 // -------- RENDER FUNCTIONS --------
 
 function renderBasicInfo(info) {
-    // Text fields
-    if (info.name) document.getElementById("heroName").textContent = info.name;
-    if (info.headline) document.getElementById("heroDescription").textContent = info.headline;
+    // Text fields - set content first, then they'll be revealed by showLoadedElements
+    const heroName = document.getElementById("heroName");
+    const heroDesc = document.getElementById("heroDescription");
+    const heroHeadline = document.getElementById("heroHeadline");
+
+    if (info.name && heroName) heroName.textContent = info.name;
+    if (info.headline && heroDesc) heroDesc.textContent = info.headline;
 
     // About Section
     if (info.about_text) document.getElementById("aboutText").innerText = info.about_text;
