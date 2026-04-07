@@ -10,9 +10,9 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import os
 
-from app.database import SessionLocal, engine, Base
-from app.models import *
-from app.schemas import *
+from backend.database import SessionLocal, engine, Base
+from backend.models import *
+from backend.schemas import *
 
 Base.metadata.create_all(bind=engine)
 

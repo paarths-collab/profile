@@ -2,14 +2,26 @@
     "version": 2,
     "builds": [
         {
-            "src": "app/main.py",
+            "src": "backend/main.py",
             "use": "@vercel/python"
+        },
+        {
+            "src": "package.json",
+            "use": "@vercel/next"
         }
     ],
     "routes": [
         {
+            "src": "/(basic-info|projects|experiences|skills|hobbies|health|register|token|admin)",
+            "dest": "backend/main.py"
+        },
+        {
+            "src": "/static/(.*)",
+            "dest": "backend/main.py"
+        },
+        {
             "src": "/(.*)",
-            "dest": "app/main.py"
+            "dest": "/"
         }
     ]
 }
