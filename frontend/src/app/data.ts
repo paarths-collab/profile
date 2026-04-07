@@ -93,9 +93,9 @@ export const DEFAULT_DATA = {
   skills: [
     {
       id: 1,
-      programming_language: "Python, C, Java, HTML, CSS, Javascript",
-      application: "VS Code, Canva, Notion, Google Colab, Jupyter Notebook, Git, GitHub, Neon, Vercel, Render, Docker, Cohere",
-      technologies: "REST APIs, Authentication, JWT, Google OAuth, LangChain, LangGraph, LLM Integration, Prompt Engineering, PostgreSQL (SQL), React.js, React Native, RAG"
+      programming_language: "Python, JavaScript, TypeScript",
+      application: "HTML/CSS, Git, GitHub, Vercel, Render, Neon, Docker",
+      technologies: "FastAPI, React, Next.js, Machine Learning, Deep Learning, NLP, OpenCV, RAG, LLM Fine-Tuning, LangChain, LangGraph, CrewAI, PostgreSQL, REST APIs, Authentication, JWT, Google OAuth, LLM Integration, Prompt Engineering"
     }
   ]
 };

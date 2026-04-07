@@ -421,19 +421,6 @@ body {
     justify-content: center;
 }
 
-.tech-indicator-dot {
-    width: 9px;
-    height: 9px;
-    display: inline-block;
-    border-radius: 50%;
-    background: #e8e8e8;
-    opacity: 0.85;
-}
-
-.tech-indicator-fallback {
-    display: none;
-}
-
 .project-description {
     color: var(--text-secondary);
     line-height: 1.7;

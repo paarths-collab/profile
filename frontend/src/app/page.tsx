@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -11,17 +11,18 @@ import { DEFAULT_DATA } from "./data";
 
 const getTechIcon = (name: string) => {
   const map: Record<string, string> = {
-    Python: "python", JavaScript: "javascript", Javascript: "javascript",
+    Python: "python", JavaScript: "javascript", Javascript: "javascript", TypeScript: "typescript",
+    HTML: "html5", CSS: "css3", "HTML/CSS": "html5",
     Java: "java", C: "c", "C++": "cplusplus", "C#": "csharp",
-    HTML: "html5", CSS: "css3", TypeScript: "typescript",
     Go: "go", Rust: "rust", Ruby: "ruby", PHP: "php", Swift: "swift", Kotlin: "kotlin",
-    React: "react", "Next.js": "nextdotjs", "Node.js": "nodedotjs", Vue: "vuedotjs", Angular: "angular",
+    React: "react", "React Native": "react", "Next.js": "nextdotjs", Nextjs: "nextdotjs", "Node.js": "nodedotjs", Vue: "vuedotjs", Angular: "angular",
     FastAPI: "fastapi", Flask: "flask", Django: "django", Express: "express",
     Tailwind: "tailwindcss", PostgreSQL: "postgresql", MongoDB: "mongodb", MySQL: "mysql",
-    Docker: "docker", Kubernetes: "kubernetes", AWS: "amazonaws", Vercel: "vercel",
+    Docker: "docker", Kubernetes: "kubernetes", AWS: "amazonaws", Vercel: "vercel", Render: "render", Neon: "neon",
     Git: "git", GitHub: "github", Figma: "figma", JWT: "jsonwebtokens",
-    OpenAI: "openai", LangChain: "langchain", LangGraph: "langchain", Pinecone: "pinecone", Streamlit: "streamlit",
-    Redis: "redis"
+    OpenAI: "openai", LangChain: "langchain", LangGraph: "langchain", CrewAI: "openai", Pinecone: "pinecone", Streamlit: "streamlit",
+    Redis: "redis", "Machine Learning": "scikitlearn", "Deep Learning": "tensorflow", NLP: "huggingface", OpenCV: "opencv",
+    RAG: "langchain", "LLM Fine-Tuning": "huggingface"
   };
 
   let cleanName = name.trim().split(' ')[0].split('(')[0].replace(/\.$/, "");
@@ -33,6 +34,7 @@ const getTechIcon = (name: string) => {
 export default function PortfolioPage() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loadedIcons, setLoadedIcons] = useState<Set<string>>(new Set());
   const data = DEFAULT_DATA;
 
   const filteredProjects = (data.projects || []).filter((p: any) =>
@@ -46,11 +48,78 @@ export default function PortfolioPage() {
     const skillSet = new Set<string>();
     (data.skills || []).forEach((s: any) => {
       [s.application, s.programming_language, s.technologies].forEach(str => {
-        if (str) str.split(',').forEach((v: string) => skillSet.add(v.trim()));
+        if (str) str.split(/[,/]/).forEach((v: string) => skillSet.add(v.trim()));
       });
     });
     return Array.from(skillSet);
   };
+
+  const getAllTechNames = () => {
+    const techSet = new Set<string>(getFullSkills());
+
+    (data.projects || []).forEach((project: any) => {
+      if (project.tech_stack) {
+        project.tech_stack.split(',').forEach((tech: string) => techSet.add(tech.trim()));
+      }
+    });
+
+    return Array.from(techSet);
+  };
+
+  const getMarqueeSkills = () => {
+    const skills = getFullSkills();
+    const grouped = new Map<string, string[]>();
+
+    skills.forEach((skill) => {
+      const icon = getTechIcon(skill) || skill;
+      const bucket = grouped.get(icon) || [];
+      bucket.push(skill);
+      grouped.set(icon, bucket);
+    });
+
+    const ordered: string[] = [];
+    const buckets = Array.from(grouped.values());
+    let hasItems = true;
+
+    while (hasItems) {
+      hasItems = false;
+      buckets.forEach((bucket) => {
+        const next = bucket.shift();
+        if (next) {
+          ordered.push(next);
+          hasItems = true;
+        }
+      });
+    }
+
+    return ordered;
+  };
+
+  useEffect(() => {
+    const techNames = getAllTechNames();
+    let cancelled = false;
+
+    techNames.forEach((tech) => {
+      const icon = getTechIcon(tech);
+      if (!icon) return;
+
+      const image = new Image();
+      image.onload = () => {
+        if (cancelled) return;
+        setLoadedIcons((current) => {
+          if (current.has(icon)) return current;
+          const next = new Set(current);
+          next.add(icon);
+          return next;
+        });
+      };
+      image.src = icon;
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [data.projects, data.skills]);
 
   const { info } = data;
 
@@ -107,7 +176,7 @@ export default function PortfolioPage() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">About Me</span>
-            <h2 className="section-title">Building Full-Stack AI Systems That Analyze &middot; Reason &middot; Act</h2>
+            <h2 className="section-title">Building Full-Stack AI Systems</h2>
           </div>
           <div className="about-content">
             <div className="about-text">
@@ -175,23 +244,15 @@ export default function PortfolioPage() {
                     <div className="project-tech-logos">
                       {p.tech_stack?.split(',').map((tech: string, i: number) => {
                         const icon = getTechIcon(tech.trim());
-                        return icon ? (
+                        return icon && loadedIcons.has(icon) ? (
                           <span key={i} className="tech-indicator-wrap" aria-hidden="true">
                             <img
                               src={icon}
                               alt=""
                               className="tech-logo"
-                              onError={(e) => {
-                                e.currentTarget.style.display = "none";
-                                const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;
-                                if (fallback) fallback.style.display = "inline-block";
-                              }}
                             />
-                            <span className="tech-indicator-dot tech-indicator-fallback" />
                           </span>
-                        ) : (
-                          <span key={i} className="tech-indicator-dot" aria-hidden="true" />
-                        );
+                        ) : null;
                       })}
                     </div>
                   </div>
@@ -233,11 +294,20 @@ export default function PortfolioPage() {
           <div className="logo-marquee">
             <div className="logo-marquee-track">
               <div className="logo-marquee-content">
-                {[...getFullSkills(), ...getFullSkills()].map((skill, i) => {
+                {[
+                  ...getMarqueeSkills(),
+                  ...getMarqueeSkills().slice(3),
+                  ...getMarqueeSkills().slice(0, 3),
+                ].map((skill, i) => {
                   const icon = getTechIcon(skill);
                   return (
                     <div key={i} className="logo-marquee-item">
-                      {icon && <img src={icon} alt={skill} />}
+                      {icon && loadedIcons.has(icon) && (
+                        <img
+                          src={icon}
+                          alt={skill}
+                        />
+                      )}
                       <span>{skill}</span>
                     </div>
                   );

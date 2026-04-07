@@ -18,3 +18,7 @@ ENV/
 # Node
 node_modules/
 .next/
+
+# Vercel & Build
+.vercel/
+tsconfig.tsbuildinfo
