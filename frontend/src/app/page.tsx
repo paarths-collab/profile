@@ -107,7 +107,7 @@ export default function PortfolioPage() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">About Me</span>
-            <h2 className="section-title">Crafting digital experiences with precision and creativity</h2>
+            <h2 className="section-title">Building Full-Stack AI Systems That Analyze &middot; Reason &middot; Act</h2>
           </div>
           <div className="about-content">
             <div className="about-text">

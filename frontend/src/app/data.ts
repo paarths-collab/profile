@@ -60,9 +60,27 @@ export const DEFAULT_DATA = {
       images: "/images/rag-system.png",
       source: "https://github.com/paarths-collab/rag-system",
       link: "https://rag-system-2mps.onrender.com/"
+    },
+    {
+      id: 6,
+      name: "NarrativeSignal",
+      one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform",
+      tech_stack: "Next.js, React, TypeScript, FastAPI, Python, DuckDB, LangChain, LiteLLM",
+      description: "An intelligent news analysis platform that aggregates financial and political news, processes it through advanced NLP and LLM models to identify narrative patterns and market signals. Features real-time trend analysis, sentiment tracking, and AI-powered insights generation for investors and analysts.",
+      images: "/images/narrativesignal.png",
+      source: "https://github.com/0xSaurabhx/NarrativeSignal",
+      link: "https://narrativesignal.vercel.app/"
     }
   ],
   experiences: [
+    {
+      id: 2,
+      company_name: "Client Project",
+      role: "NSE News-to-Telegram Automation",
+      start_date: "Mar 2026",
+      end_date: "Apr 2026",
+      description: "Built an automated news intelligence pipeline for a client to deliver real-time NSE (National Stock Exchange) market updates via Telegram. Implemented web scraping infrastructure to ingest financial news from multiple sources, built NLP-based processing to filter and prioritize relevant market signals, and designed a message routing system to deliver curated alerts to Telegram channels with minimal latency. Integrated error handling, retry logic, and monitoring to ensure 99%+ uptime for daily market operations, demonstrating ability to build production-grade backend automation systems."
+    },
     {
       id: 1,
       company_name: "SimPPL",
