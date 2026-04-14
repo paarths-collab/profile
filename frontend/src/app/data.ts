@@ -13,6 +13,16 @@ export const DEFAULT_DATA = {
   projects: [
     {
       id: 1,
+      name: "GitHub PR Review Context MCP",
+      one_liner: "AI-Powered Repository Memory",
+      tech_stack: "Python, MCP, ChromaDB, GraphQL, LangChain, Groq, Cerebras",
+      description: "GitHub PR Review Context MCP is a local RAG platform that gives AI assistants institutional memory of your repository's history. By indexing past PRs and review comments into ChromaDB, the system enables tools like Cursor and Claude to catch team-specific patterns and provide grounded, context-aware code reviews. Built with Python and support for multiple LLM providers, it automates high-speed verification to reduce manual review cycles and ensure project-specific consistency.",
+      images: "/images/demo.gif",
+      source: "https://github.com/paarths-collab/github-pr-context-mcp",
+      link: null
+    },
+    {
+      id: 2,
       name: "Aletheia",
       one_liner: "AI-Powered Misinformation Detection Platform",
       tech_stack: "FastAPI, Python, React, Docker, Vercel, APIs",
@@ -20,16 +30,6 @@ export const DEFAULT_DATA = {
       images: "/images/Aletheia-front.png",
       source: null,
       link: "https://aletheia-mumbaihacks.vercel.app/"
-    },
-    {
-      id: 2,
-      name: "Resume Analyzer",
-      one_liner: "AI-Powered Resume Evaluation Platform",
-      tech_stack: "Python, FastAPI, HTML, CSS, JavaScript, PostgreSQL, Docker, Render, Vercel, Google OAuth",
-      description: "An AI-powered platform that evaluates resumes against job descriptions by extracting resume content, performing semantic skill matching, and generating actionable improvement suggestions. The system features secure authentication, scalable backend services, and a responsive web interface for real-world usage.",
-      images: "/images/resume-analyzer-front.png",
-      source: null,
-      link: "https://resume-analyzer-two-beta.vercel.app/"
     },
     {
       id: 3,
@@ -43,6 +43,16 @@ export const DEFAULT_DATA = {
     },
     {
       id: 4,
+      name: "NarrativeSignal",
+      one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform",
+      tech_stack: "Next.js, React, TypeScript, FastAPI, Python, DuckDB, LangChain, LiteLLM",
+      description: "NarrativeSignal is an AI narrative intelligence platform that converts large volumes of unstructured data into structured insights, detects trends and anomalies, and generates actionable narratives to support faster, insight-driven decisions.",
+      images: "/images/narrativesignal.png",
+      source: "https://github.com/0xSaurabhx/NarrativeSignal",
+      link: "https://narrativesignal.vercel.app/"
+    },
+    {
+      id: 5,
       name: "TripSync",
       one_liner: "Campus Mobility & Networking Application",
       tech_stack: "Python, FastAPI, PostgreSQL, Docker, React Native",
@@ -52,24 +62,14 @@ export const DEFAULT_DATA = {
       link: null
     },
     {
-      id: 5,
-      name: "RAG System",
-      one_liner: "A Retrieval-Augmented Generation system for intelligent document querying.",
-      tech_stack: "Python, FastAPI, LangChain, Vector DB",
-      description: "This project implements a RAG system that allows users to query their documents using natural language. It uses a vector database to index documents and an LLM to generate accurate answers based on the retrieved context.",
-      images: "/images/rag-system.png",
-      source: "https://github.com/paarths-collab/rag-system",
-      link: "https://rag-system-2mps.onrender.com/"
-    },
-    {
       id: 6,
-      name: "NarrativeSignal",
-      one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform",
-      tech_stack: "Next.js, React, TypeScript, FastAPI, Python, DuckDB, LangChain, LiteLLM",
-      description: "NarrativeSignal is an AI narrative intelligence platform that converts large volumes of unstructured data into structured insights, detects trends and anomalies, and generates actionable narratives to support faster, insight-driven decisions.",
-      images: "/images/narrativesignal.png",
-      source: "https://github.com/0xSaurabhx/NarrativeSignal",
-      link: "https://narrativesignal.vercel.app/"
+      name: "Resume Analyzer",
+      one_liner: "AI-Powered Resume Evaluation Platform",
+      tech_stack: "Python, FastAPI, HTML, CSS, JavaScript, PostgreSQL, Docker, Render, Vercel, Google OAuth",
+      description: "An AI-powered platform that evaluates resumes against job descriptions by extracting resume content, performing semantic skill matching, and generating actionable improvement suggestions. The system features secure authentication, scalable backend services, and a responsive web interface for real-world usage.",
+      images: "/images/resume-analyzer-front.png",
+      source: null,
+      link: "https://resume-analyzer-two-beta.vercel.app/"
     }
   ],
   experiences: [
