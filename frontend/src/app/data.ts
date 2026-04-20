@@ -6,7 +6,7 @@ export const DEFAULT_DATA = {
     mobile_number: "+919136144566",
     linkedin: "https://www.linkedin.com/in/paarth-gala-8105022a6",
     github: "https://github.com/paarths-collab",
-    profile_image: "/images/narrativesignal.png",
+    profile_image: "/images/profile.jpg",
     about_text: "I am an Artificial Intelligence & Data Science undergraduate with hands-on experience building AI-powered platforms, backend systems, and LLM-driven applications. My work focuses on designing scalable APIs, integrating machine learning and language models, and deploying production-ready systems using modern cloud and containerization tools.\n\nI have built end-to-end products across misinformation analysis, resume evaluation, fintech research, and campus mobility, with a strong emphasis on ethical and responsible AI. I enjoy solving real-world problems by combining technical depth, product thinking, and clean system design, and I am continuously learning at the intersection of AI, backend engineering, and applied research.",
     description: "Building scalable AI systems and backend platforms with LLMs and ethical AI at the core."
   },
