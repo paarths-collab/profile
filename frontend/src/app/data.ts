@@ -47,7 +47,7 @@ export const DEFAULT_DATA = {
       one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform",
       tech_stack: "Next.js, React, TypeScript, FastAPI, Python, DuckDB, LangChain, LiteLLM",
       description: "NarrativeSignal is an AI narrative intelligence platform that converts large volumes of unstructured data into structured insights, detects trends and anomalies, and generates actionable narratives to support faster, insight-driven decisions.",
-      images: "/images/narrativesignal.png",
+      images: "/images/narrativesignal-2.png",
       source: "https://github.com/0xSaurabhx/NarrativeSignal",
       link: "https://narrativesignal.vercel.app/"
     },
