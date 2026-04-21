@@ -487,6 +487,20 @@ body {
     padding: 0.4rem;
 }
 
+.project-images .swiper-slide .project-video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+    padding: 0.4rem;
+}
+
+.project-images .swiper-slide .project-video-zoomed {
+    transform: scale(0.82);
+    transform-origin: center;
+}
+
 /* Timeline / Experience */
 .timeline {
     max-width: 900px;

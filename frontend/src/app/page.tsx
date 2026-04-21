@@ -278,7 +278,14 @@ export default function PortfolioPage() {
                       return (
                         <SwiperSlide key={i}>
                           {isVideo ? (
-                            <video src={media} autoPlay muted loop playsInline />
+                            <video
+                              src={media}
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              className={p.name.toLowerCase() === "killport" ? "project-video project-video-zoomed" : "project-video"}
+                            />
                           ) : (
                             <img src={media} alt={p.name} />
                           )}

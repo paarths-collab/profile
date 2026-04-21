@@ -17,7 +17,7 @@ export const DEFAULT_DATA = {
       one_liner: "MCP Server for Stock Analysis, Backtesting, and Portfolio Intelligence",
       tech_stack: "Python, FastMCP, yfinance, pandas-ta, DuckDB, Render",
       description: "mcp-quant-brain is a finance intelligence MCP server that supports natural-language stock analysis, strategy backtesting (MACD/RSI/SMA/breakout), portfolio optimization, sector intelligence, and chart generation for US and India tickers.",
-      images: "/images/KILLPORT.mp4",
+      images: "null",
       source: "https://github.com/paarths-collab/quant-brain-mcp",
       link: "https://mcp-quant-brain.onrender.com/mcp"
     },
@@ -27,7 +27,7 @@ export const DEFAULT_DATA = {
       one_liner: "Lightning-Fast Docker-Native Port Killer with AI-Agent JSON Mode",
       tech_stack: "Go, Shell, CLI, Docker",
       description: "killport is a high-performance CLI utility that terminates processes by port (including concurrent port ranges), safely stops Docker-backed workloads, and provides strict --json output for reliable AI-agent and CI parsing.",
-      images: null,
+      images: "/images/KILLPORT.mp4",
       source: "https://github.com/paarths-collab/killport",
       link: "https://pkg.go.dev/github.com/paarths-collab/killport"
     },
