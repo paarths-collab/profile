@@ -12,6 +12,26 @@ export const DEFAULT_DATA = {
   },
   projects: [
     {
+      id: 7,
+      name: "quant-brain-mcp",
+      one_liner: "MCP Server for Stock Analysis, Backtesting, and Portfolio Intelligence",
+      tech_stack: "Python, FastMCP, yfinance, pandas-ta, DuckDB, Render",
+      description: "mcp-quant-brain is a finance intelligence MCP server that supports natural-language stock analysis, strategy backtesting (MACD/RSI/SMA/breakout), portfolio optimization, sector intelligence, and chart generation for US and India tickers.",
+      images: null,
+      source: "https://github.com/paarths-collab/quant-brain-mcp",
+      link: "https://mcp-quant-brain.onrender.com/mcp"
+    },
+    {
+      id: 8,
+      name: "killport",
+      one_liner: "Lightning-Fast Docker-Native Port Killer with AI-Agent JSON Mode",
+      tech_stack: "Go, Shell, CLI, Docker",
+      description: "killport is a high-performance CLI utility that terminates processes by port (including concurrent port ranges), safely stops Docker-backed workloads, and provides strict --json output for reliable AI-agent and CI parsing.",
+      images: null,
+      source: "https://github.com/paarths-collab/killport",
+      link: "https://pkg.go.dev/github.com/paarths-collab/killport"
+    },
+    {
       id: 1,
       name: "GitHub PR Review Context MCP",
       one_liner: "AI-Powered Repository Memory",
@@ -44,7 +64,7 @@ export const DEFAULT_DATA = {
     {
       id: 4,
       name: "NarrativeSignal",
-      one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform",
+      one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform (Best viewed at 80% Chrome zoom)",
       tech_stack: "Next.js, React, TypeScript, FastAPI, Python, DuckDB, LangChain, LiteLLM",
       description: "NarrativeSignal is an AI narrative intelligence platform that converts large volumes of unstructured data into structured insights, detects trends and anomalies, and generates actionable narratives to support faster, insight-driven decisions.",
       images: "/images/narrativesignal-2.png",
