@@ -271,11 +271,20 @@ export default function PortfolioPage() {
                     loop={true}
                     className="mySwiper"
                   >
-                    {(p.images ? p.images.split(',') : []).map((img: string, i: number) => (
-                      <SwiperSlide key={i}>
-                        <img src={img.trim()} alt={p.name} />
-                      </SwiperSlide>
-                    ))}
+                    {(p.images ? p.images.split(',') : []).map((img: string, i: number) => {
+                      const media = img.trim();
+                      const isVideo = /\.(mp4|webm|ogg)$/i.test(media);
+
+                      return (
+                        <SwiperSlide key={i}>
+                          {isVideo ? (
+                            <video src={media} autoPlay muted loop playsInline />
+                          ) : (
+                            <img src={media} alt={p.name} />
+                          )}
+                        </SwiperSlide>
+                      );
+                    })}
                   </Swiper>
                 </div>
               </div>

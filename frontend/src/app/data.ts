@@ -17,7 +17,7 @@ export const DEFAULT_DATA = {
       one_liner: "MCP Server for Stock Analysis, Backtesting, and Portfolio Intelligence",
       tech_stack: "Python, FastMCP, yfinance, pandas-ta, DuckDB, Render",
       description: "mcp-quant-brain is a finance intelligence MCP server that supports natural-language stock analysis, strategy backtesting (MACD/RSI/SMA/breakout), portfolio optimization, sector intelligence, and chart generation for US and India tickers.",
-      images: null,
+      images: "/images/KILLPORT.mp4",
       source: "https://github.com/paarths-collab/quant-brain-mcp",
       link: "https://mcp-quant-brain.onrender.com/mcp"
     },
@@ -64,9 +64,9 @@ export const DEFAULT_DATA = {
     {
       id: 4,
       name: "NarrativeSignal",
-      one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform (Best viewed at 80% Chrome zoom)",
+      one_liner: "AI-Powered News Analysis and Narrative Intelligence Platform",
       tech_stack: "Next.js, React, TypeScript, FastAPI, Python, DuckDB, LangChain, LiteLLM",
-      description: "NarrativeSignal is an AI narrative intelligence platform that converts large volumes of unstructured data into structured insights, detects trends and anomalies, and generates actionable narratives to support faster, insight-driven decisions.",
+      description: "NarrativeSignal is an AI narrative intelligence platform that converts large volumes of unstructured data into structured insights, detects trends and anomalies, and generates actionable narratives to support faster, insight-driven decisions.\n\nBest viewed at 80% Chrome zoom.",
       images: "/images/narrativesignal-2.png",
       source: "https://github.com/0xSaurabhx/NarrativeSignal",
       link: "https://narrativesignal.vercel.app/"
