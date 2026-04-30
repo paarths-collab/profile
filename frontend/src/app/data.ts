@@ -1,7 +1,7 @@
 export const DEFAULT_DATA = {
   info: {
     name: "Paarth Gala",
-    headline: " AI Intern & Full Stack Developer",
+    headline: " AI & Full Stack Developer",
     email: "paarthgala1@gmail.com",
     mobile_number: "+919136144566",
     linkedin: "https://www.linkedin.com/in/paarth-gala-8105022a6",
